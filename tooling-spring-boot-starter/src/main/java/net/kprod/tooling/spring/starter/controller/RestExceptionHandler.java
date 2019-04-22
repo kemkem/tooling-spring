@@ -5,6 +5,7 @@ import net.kprod.tooling.spring.commons.log.Msg;
 import net.kprod.tooling.spring.starter.data.response.ResponseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,7 +22,21 @@ import java.io.StringWriter;
  */
 @ControllerAdvice
 public class RestExceptionHandler {
-    //protected Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
+    public static final String STACKTRACE_UNAVAILABLE_MESSAGE = "unavailable";
+    private Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
+
+    @Value("${tooling.error.stacktrace.include:false}")
+    private boolean includeStackTrace;
+
+    /**
+     * Handle {@link HttpServiceException} exceptions
+     * @param httpServiceExc {@link HttpServiceException} exception
+     * @return {@link ResponseException} within a {@link ResponseEntity}
+     */
+    @ExceptionHandler(value = HttpServiceException.class)
+    public ResponseEntity<ResponseException> handleHttpException(HttpServiceException httpServiceExc) {
+        return createResponse(httpServiceExc, httpServiceExc.getStatus(), httpServiceExc);
+    }
 
     /**
      * Handle {@link Exception} unexpected exceptions
@@ -68,7 +83,12 @@ public class RestExceptionHandler {
                 parentException.getMessage(),
                 translatedException.getMessage(),
                 translatedException.getReason()));
-        responseException.setStacktrace(getStacktraceAsString(parentException));
+        if(includeStackTrace) {
+            responseException.setStacktrace(getStacktraceAsString(parentException));
+        } else {
+            responseException.setStacktrace(STACKTRACE_UNAVAILABLE_MESSAGE);
+        }
+        LOG.error(responseException.getMessage());
 
         return responseException;
     }

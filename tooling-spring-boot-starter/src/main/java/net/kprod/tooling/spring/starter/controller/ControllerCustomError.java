@@ -28,7 +28,7 @@ public class ControllerCustomError implements ErrorController {
     public static final String SPRING_ERROR_MAP_MESSAGE = "message";
     public static final String SPRING_ERROR_MAP_TRACE = "trace";
 
-    @Value("${tooling.error.stacktrace.include:true}")
+    @Value("${tooling.error.stacktrace.include:false}")
     private boolean includeStackTrace;
 
     @Autowired
@@ -40,7 +40,7 @@ public class ControllerCustomError implements ErrorController {
         HttpStatus status = HttpStatus.valueOf(response.getStatus());
 
         //Get Spring error attributes
-        Optional<Map<String, Object>> mapErrorAttribute = this.getErrorAttributes(webRequest, includeStackTrace);
+        Optional<Map<String, Object>> mapErrorAttribute = this.getErrorAttributes(webRequest);
 
         //Default message
         String message = Msg.format("Spring error (no details) status [{}]", status.toString());
@@ -66,10 +66,9 @@ public class ControllerCustomError implements ErrorController {
     /**
      * Get error attributes from request
      * @param webRequest request
-     * @param includeStackTrace if true, include elements from stack trace
      * @return map of attributes
      */
-    private Optional<Map<String, Object>> getErrorAttributes(WebRequest webRequest, boolean includeStackTrace) {
+    private Optional<Map<String, Object>> getErrorAttributes(WebRequest webRequest) {
         if(errorAttributes == null) {
             return Optional.empty();
         }
