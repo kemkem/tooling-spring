@@ -1,0 +1,6 @@
+# TSBS : Tooling Spring Boot Parent
+
+A Spring Boot custom Starter with error management and monitoring
+features.
+
+Check link:https://dev.kprod.net/spring-boot-starter-1[the step by step guide].
