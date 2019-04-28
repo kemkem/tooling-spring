@@ -7,4 +7,4 @@ Check the step by step guide from link:https://dev.kprod.net[my blog] :
 
 * link:https://dev.kprod.net/spring-boot-starter-1[chapter 1] : Custom Spring Boot 2 Starter with Spring 5, chapter 1
 * link:https://dev.kprod.net/spring-boot-starter-2[chapter 2] : Custom Spring Boot Starter : Chapter 2, error handling
-
+* link:https://dev.kprod.net/spring-boot-starter-2[chapter 3] : Custom Spring Boot Starter : Chapter 3, logger and process unique id
