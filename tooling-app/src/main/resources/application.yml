@@ -1,4 +1,10 @@
+#Tooling Spring Boot Starter config
 tooling :
   error :
     stacktrace :
       include : true
+
+#Logger config
+logging:
+  level:
+    ROOT: INFO
