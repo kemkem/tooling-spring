@@ -2,7 +2,6 @@ package net.kprod.tooling.spring.app.controller;
 
 import net.kprod.tooling.spring.app.data.Response;
 import net.kprod.tooling.spring.app.service.FooService;
-import net.kprod.tooling.spring.starter.service.DummyService;
 import net.kprod.tooling.spring.starter.service.MonitoringService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class ControllerRoot {
     private Logger LOG = LoggerFactory.getLogger(ControllerRoot.class);
-
-    //Tooling starter service
-    @Autowired
-    private DummyService dummyService;
 
     @Autowired
     private MonitoringService monitoringService;

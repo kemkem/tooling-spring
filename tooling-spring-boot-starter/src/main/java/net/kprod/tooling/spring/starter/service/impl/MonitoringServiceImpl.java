@@ -21,13 +21,16 @@ public class MonitoringServiceImpl implements MonitoringService {
     protected final static int LOG_DATA_ID_SHORT_LENGTH = 12;
     protected final static int LOG_DATA_ID_SHORT_DIFF = LOG_DATA_ID_LENGTH - LOG_DATA_ID_SHORT_LENGTH;
 
+    // start process monitoring
     @Override
     public String start(String processName) {
-        String processId = UUID.randomUUID().toString();
         MDC.clear();
+        //processId is a ramdom UUID
+        String processId = UUID.randomUUID().toString();
 
         MDC.put(MONITORING_PROCESS_NAME, processName);
         MDC.put(MONITORING_PROCESS_ID, processId);
+        //Short version of processId (split after the last UUID dash)
         MDC.put(MONITORING_PROCESS_ID_SHORT, this.getShortLogDataId(processId));
 
         LOG.info("Start monitoring processName [{}] id [{}]",
@@ -37,21 +40,28 @@ public class MonitoringServiceImpl implements MonitoringService {
         return processId;
     }
 
+    // mark process as finished
     @Override
     public void end() {
         LOG.info("End monitoring processName [{}] id [{}]",
                 this.getProcessName(),
                 this.getProcessId());
+
+        //clear MDC context
+        MDC.clear();
     }
 
+    //get processId from MDC
     private String getProcessId() {
         return MDC.get(MONITORING_PROCESS_ID);
     }
 
+    //get processName from MDC
     private String getProcessName() {
         return MDC.get(MONITORING_PROCESS_NAME);
     }
 
+    //shortening processId UUID
     private String getShortLogDataId(String logDataId) {
         if(logDataId == null || logDataId.length() < LOG_DATA_ID_SHORT_DIFF) {
             return logDataId;

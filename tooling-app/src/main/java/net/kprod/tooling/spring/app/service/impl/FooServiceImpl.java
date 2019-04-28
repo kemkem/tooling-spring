@@ -19,7 +19,7 @@ public class FooServiceImpl implements FooService {
         } catch (Exception e) {
             LOG.error("sleep have gone wrong");
         }
-        return new Response("foo");
+        return new Response("bar");
     }
 
     @Override
