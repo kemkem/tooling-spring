@@ -42,10 +42,11 @@ public class MonitoringServiceImpl implements MonitoringService {
 
     // mark process as finished
     @Override
-    public void end() {
-        LOG.info("End monitoring processName [{}] id [{}]",
+    public void end(long elapsedTime) {
+        LOG.info("End monitoring processName [{}] id [{}] took [{}] ms",
                 this.getProcessName(),
-                this.getProcessId());
+                this.getProcessId(),
+                elapsedTime);
 
         //clear MDC context
         MDC.clear();

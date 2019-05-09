@@ -14,6 +14,7 @@ public interface MonitoringService {
 
     /**
      * Stop process monitoring
+     * @param elsapedTime process execution time in ms
      */
-    void end();
+    void end(long elsapedTime);
 }
