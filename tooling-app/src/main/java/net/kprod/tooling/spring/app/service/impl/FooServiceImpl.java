@@ -3,13 +3,19 @@ package net.kprod.tooling.spring.app.service.impl;
 import net.kprod.tooling.spring.app.data.Response;
 import net.kprod.tooling.spring.app.service.FooService;
 import net.kprod.tooling.spring.commons.exception.ServiceException;
+import net.kprod.tooling.spring.starter.data.bean.MonitoringData;
+import net.kprod.tooling.spring.starter.service.MonitoringService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FooServiceImpl implements FooService {
     private Logger LOG = LoggerFactory.getLogger(FooService.class);
+
+    @Autowired
+    private MonitoringService monitoringService;
 
     @Override
     public Response foo() throws ServiceException {
@@ -31,5 +37,33 @@ public class FooServiceImpl implements FooService {
             LOG.error("sleep have gone wrong");
         }
         return new Response("baz");
+    }
+
+    @Override
+    public Response baz() throws ServiceException {
+        LOG.info("bar method");
+        //MonitoringData monitoringData = monitoringService.getCurrentMonitoringData();
+        this.bazSubProcessA();
+        this.bazSubProcessB();
+        ;
+        return new Response("foobar");
+    }
+
+    private void bazSubProcessA() {
+        monitoringService.start("subProcessA");
+        try{
+            Thread.sleep(500);
+        } catch (Exception e) {
+            LOG.error("sleep have gone wrong");
+        }
+    }
+
+    private void bazSubProcessB() {
+        monitoringService.start("subProcessB");
+        try{
+            Thread.sleep(500);
+        } catch (Exception e) {
+            LOG.error("sleep have gone wrong");
+        }
     }
 }

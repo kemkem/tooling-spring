@@ -5,7 +5,7 @@
     <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
 
     <!-- This variable defines the MDC pattern -->
-    <variable scope="context" name="mdcPattern" value="%clr([%X{_processIdShort}]){red} %clr([%X{_processName}]){red}"/>
+    <variable scope="context" name="mdcPattern" value="%clr([%X{_processIdShort}]){red} %clr([%X{_processName}]){red} %clr([%X{_processSuffix}]){red}"/>
 
     <!-- This defines console appender -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">

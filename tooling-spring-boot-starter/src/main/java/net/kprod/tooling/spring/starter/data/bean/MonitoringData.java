@@ -1,5 +1,8 @@
 package net.kprod.tooling.spring.starter.data.bean;
 
+import net.kprod.tooling.spring.commons.exception.ServiceException;
+import org.springframework.util.StringUtils;
+
 import java.util.Optional;
 
 /**
@@ -32,20 +35,9 @@ public class MonitoringData {
          * {@link MonitoringData} builder constructor
          * @param service mandatory service name
          */
-        public Builder(String service) {
+        public Builder(String service, String processId) {
             this.service = service;
-        }
-
-        /**
-         * ProcessId value
-         * If set, monitoring is considered as "started"
-         * If unset, monitoring is considered as "continued", as in @Async processing methods
-         * @param id log data id
-         * @return builder object
-         */
-        public Builder setId(String id) {
-            this.id = id;
-            return this;
+            this.id = processId;
         }
 
         /**
@@ -72,7 +64,10 @@ public class MonitoringData {
          * Build method
          * @return Builded {@link MonitoringData} object
          */
-        public MonitoringData build() {
+        public MonitoringData build() throws ServiceException {
+            if(StringUtils.isEmpty(service) || StringUtils.isEmpty(id)) {
+                throw new ServiceException("Unable to build MonitorData");
+            }
             //TODO this is not great, find something better to garanty that this values are not null
             return new MonitoringData(
                     this.id,
@@ -87,7 +82,7 @@ public class MonitoringData {
          */
         public static MonitoringData duplicate(MonitoringData monitoringData, String suffix) {
             return new MonitoringData(
-                    monitoringData.getId().get(),
+                    monitoringData.getId(),
                     monitoringData.getService(),
                     suffix,
                     monitoringData.isTraceMode());
@@ -102,8 +97,8 @@ public class MonitoringData {
         this.traceMode = traceMode;
     }
 
-    public Optional<String> getId() {
-        return Optional.ofNullable(id);
+    public String getId() {
+        return id;
     }
 
     public String getService() {
@@ -126,7 +121,7 @@ public class MonitoringData {
     public int hashCode() {
         int result = hashCode;
         if (result == 0) {
-            String id = this.getId().orElse("");
+            String id = this.getId();
             String suffix = this.getSuffix().orElse("");
 
             result = id.hashCode();
@@ -150,11 +145,11 @@ public class MonitoringData {
         }
         if(obj instanceof MonitoringData) {
             MonitoringData other = (MonitoringData) obj;
-            String id = this.getId().orElse("");
+            String id = this.getId();
             //TODO as in duplicate mode suffix is mandatory, is it relevant to consider as part of equality ?
             String suffix = this.getSuffix().orElse("");
 
-            String otherId = other.getId().orElse("");
+            String otherId = other.getId();
             String otherSuffix = other.getSuffix().orElse("");
 
             return this.traceMode == other.traceMode &&

@@ -1,6 +1,7 @@
 package net.kprod.tooling.spring.starter.aspect;
 
 import net.kprod.tooling.spring.starter.annotation.MonitoringDisable;
+import net.kprod.tooling.spring.starter.data.bean.MonitoringData;
 import net.kprod.tooling.spring.starter.service.MonitoringService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Component
 public class ControllerLogAspect {
 
-    public static final String SERVICENAME_SEPARATOR = ".";
     @Autowired
     private MonitoringService monitoringService;
 
@@ -52,28 +52,16 @@ public class ControllerLogAspect {
             controllerName = joinPoint.getTarget().getClass().getSimpleName();
         }
 
-        StringBuilder sbServiceName = new StringBuilder();
-        sbServiceName
-                .append(controllerName)
-                .append(SERVICENAME_SEPARATOR)
-                .append(methodName);
-
-
-        //MonitoringData monitoringData = new MonitoringData.Builder(serviceName).build();
-        //monitoringService.initMonitoring(monitoringData);
-
         //keep current time
         long start = System.currentTimeMillis();
         //start monitoring
-        monitoringService.start(sbServiceName.toString());
+        monitoringService.start(controllerName, methodName);
         //execute controller method
         Object proceed = joinPoint.proceed();
         //get execution time
         Long elapsedTime = System.currentTimeMillis() - start;
 
-        //monitoringService.reportEndOfProcess(executionTime);
         monitoringService.end(elapsedTime);
-
         return proceed;
     }
 }

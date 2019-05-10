@@ -56,6 +56,20 @@ public class ControllerRoot {
     }
 
     /**
+     * Returns a json object {@link Response} with {@link FooService#bar} response
+     * @return Json message
+     * @throws Exception if something fails
+     */
+    @RequestMapping(value = "/baz", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> baz() throws Exception {
+        //monitoringService.start(this.getClass().getSimpleName() + "#bar");
+        Response response = fooService.baz();
+        LOG.info("Response [{}]", response.getMessage());
+        //monitoringService.end();
+        return ResponseEntity.ok(response);
+    }
+
+    /**
      * Force an exception to rise
      * @return Json exception message
      * @throws Exception if something fails (it does !)
