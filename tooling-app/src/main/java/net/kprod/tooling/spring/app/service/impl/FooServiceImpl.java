@@ -38,32 +38,4 @@ public class FooServiceImpl implements FooService {
         }
         return new Response("baz");
     }
-
-    @Override
-    public Response baz() throws ServiceException {
-        LOG.info("bar method");
-        //MonitoringData monitoringData = monitoringService.getCurrentMonitoringData();
-        this.bazSubProcessA();
-        this.bazSubProcessB();
-        ;
-        return new Response("foobar");
-    }
-
-    private void bazSubProcessA() {
-        monitoringService.start("subProcessA");
-        try{
-            Thread.sleep(500);
-        } catch (Exception e) {
-            LOG.error("sleep have gone wrong");
-        }
-    }
-
-    private void bazSubProcessB() {
-        monitoringService.start("subProcessB");
-        try{
-            Thread.sleep(500);
-        } catch (Exception e) {
-            LOG.error("sleep have gone wrong");
-        }
-    }
 }

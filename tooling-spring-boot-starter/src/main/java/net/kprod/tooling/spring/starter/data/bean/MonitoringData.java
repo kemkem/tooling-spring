@@ -68,7 +68,7 @@ public class MonitoringData {
             if(StringUtils.isEmpty(service) || StringUtils.isEmpty(id)) {
                 throw new ServiceException("Unable to build MonitorData");
             }
-            //TODO this is not great, find something better to garanty that this values are not null
+            //TODO this is not great, find something better to ensure that those values are not null
             return new MonitoringData(
                     this.id,
                     this.service,

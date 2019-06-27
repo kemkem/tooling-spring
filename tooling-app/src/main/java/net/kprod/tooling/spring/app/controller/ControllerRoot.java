@@ -22,9 +22,6 @@ public class ControllerRoot {
     private Logger LOG = LoggerFactory.getLogger(ControllerRoot.class);
 
     @Autowired
-    private MonitoringService monitoringService;
-
-    @Autowired
     private FooService fooService;
 
     /**
@@ -34,10 +31,8 @@ public class ControllerRoot {
      */
     @RequestMapping(value = "/foo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> foo() throws Exception {
-        //monitoringService.start(this.getClass().getSimpleName() + "#foo");
         Response response = fooService.foo();
         LOG.info("Response [{}]", response.getMessage());
-        //monitoringService.end();
         return ResponseEntity.ok(response);
     }
 
@@ -48,24 +43,8 @@ public class ControllerRoot {
      */
     @RequestMapping(value = "/bar", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> bar() throws Exception {
-        //monitoringService.start(this.getClass().getSimpleName() + "#bar");
         Response response = fooService.bar();
         LOG.info("Response [{}]", response.getMessage());
-        //monitoringService.end();
-        return ResponseEntity.ok(response);
-    }
-
-    /**
-     * Returns a json object {@link Response} with {@link FooService#bar} response
-     * @return Json message
-     * @throws Exception if something fails
-     */
-    @RequestMapping(value = "/baz", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> baz() throws Exception {
-        //monitoringService.start(this.getClass().getSimpleName() + "#bar");
-        Response response = fooService.baz();
-        LOG.info("Response [{}]", response.getMessage());
-        //monitoringService.end();
         return ResponseEntity.ok(response);
     }
 

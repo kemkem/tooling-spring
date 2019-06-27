@@ -52,6 +52,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.9.4</version>
+		</dependency>
 
 		<dependency>
 			<groupId>net.kprod.tooling.spring</groupId>
