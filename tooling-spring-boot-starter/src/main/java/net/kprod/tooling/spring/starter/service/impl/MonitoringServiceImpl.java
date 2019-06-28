@@ -53,8 +53,8 @@ public class MonitoringServiceImpl implements MonitoringService {
 
     /** {@inheritDoc} */
     @Override
-    public String start(String suffix) {
-        MonitoringData monitoringDataAsync = MonitoringData.Builder.duplicate(this.getCurrentMonitoringData(), suffix);
+    public String keep(MonitoringData monitoringData, String suffix) {
+        MonitoringData monitoringDataAsync = MonitoringData.Builder.duplicate(monitoringData, suffix);
         this.initMonitoring(monitoringDataAsync);
         return monitoringDataAsync.getId();
     }

@@ -1,6 +1,5 @@
 package net.kprod.tooling.spring.starter.service;
 
-import net.kprod.tooling.spring.commons.exception.ServiceException;
 import net.kprod.tooling.spring.starter.data.bean.MonitoringData;
 
 /**
@@ -21,7 +20,7 @@ public interface MonitoringService {
      * @param suffix process suffix
      * @return processId
      */
-    String start(String suffix);
+    String keep(MonitoringData monitoringData, String suffix);
 
     /**
      * Stop process monitoring
