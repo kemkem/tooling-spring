@@ -1,6 +1,7 @@
 package net.kprod.tooling.spring.app.service.impl;
 
 import net.kprod.tooling.spring.app.data.Response;
+import net.kprod.tooling.spring.app.service.AsyncService;
 import net.kprod.tooling.spring.app.service.FooService;
 import net.kprod.tooling.spring.commons.exception.ServiceException;
 import net.kprod.tooling.spring.starter.data.bean.MonitoringData;
@@ -17,6 +18,9 @@ public class FooServiceImpl implements FooService {
     @Autowired
     private MonitoringService monitoringService;
 
+    @Autowired
+    private AsyncService asyncService;
+
     @Override
     public Response foo() throws ServiceException {
         LOG.info("foo method");
@@ -31,11 +35,7 @@ public class FooServiceImpl implements FooService {
     @Override
     public Response bar() throws ServiceException {
         LOG.info("bar method");
-        try{
-            Thread.sleep(2000);
-        } catch (Exception e) {
-            LOG.error("sleep have gone wrong");
-        }
-        return new Response("baz");
+        asyncService.asyncProcess();
+        return new Response("processing");
     }
 }

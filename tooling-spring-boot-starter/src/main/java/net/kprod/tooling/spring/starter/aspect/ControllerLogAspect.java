@@ -1,7 +1,6 @@
 package net.kprod.tooling.spring.starter.aspect;
 
 import net.kprod.tooling.spring.starter.annotation.MonitoringDisable;
-import net.kprod.tooling.spring.starter.data.bean.MonitoringData;
 import net.kprod.tooling.spring.starter.service.MonitoringService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
