@@ -1,6 +1,7 @@
 package net.kprod.tooling.spring.app.service.impl;
 
 import net.kprod.tooling.spring.app.service.AsyncService;
+import net.kprod.tooling.spring.commons.exception.ServiceException;
 import net.kprod.tooling.spring.starter.data.bean.AsyncResult;
 import net.kprod.tooling.spring.starter.data.bean.MonitoringData;
 import net.kprod.tooling.spring.starter.async.SupplyAsync;
@@ -22,11 +23,21 @@ public class AsyncServiceImpl implements AsyncService {
 
     @Async
     @Override
-    public CompletableFuture<AsyncResult> asyncProcess(MonitoringData monitoringData) {
+    public CompletableFuture<AsyncResult> asyncProcess(MonitoringData monitoringData) throws ServiceException {
         SupplyAsync sa = new SupplyAsync(monitoringService, monitoringData, () -> runAsyncProcess());
         return CompletableFuture.supplyAsync(sa);
     }
 
+    @Async
+    @Override
+    public CompletableFuture<AsyncResult> asyncProcessError(MonitoringData monitoringData) throws ServiceException {
+        SupplyAsync sa = new SupplyAsync(monitoringService, monitoringData, () -> runAsyncProcessError());
+        return CompletableFuture.supplyAsync(sa);
+    }
+
+    /**
+     * async processing
+     */
     private void runAsyncProcess() {
         LOG.info("asyncProcess method");
         try{
@@ -34,8 +45,19 @@ public class AsyncServiceImpl implements AsyncService {
         } catch (Exception e) {
             LOG.error("sleep have gone wrong");
         }
-        throw new NullPointerException("bang");
-        //LOG.info("async processing completed");
+        LOG.info("async processing completed");
+    }
 
+    /**
+     * async processing with error throwing
+     */
+    private void runAsyncProcessError() {
+        LOG.info("asyncProcess method");
+        try{
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            LOG.error("sleep have gone wrong");
+        }
+        throw new NullPointerException("bang");
     }
 }

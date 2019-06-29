@@ -43,4 +43,16 @@ public class FooServiceImpl implements FooService {
         }
         return new Response("processing");
     }
+
+    @Override
+    public Response barError() throws ServiceException {
+        LOG.info("bar method");
+        asyncService.asyncProcessError(monitoringService.getCurrentMonitoringData());
+        try{
+            Thread.sleep(500);
+        } catch (Exception e) {
+            LOG.error("sleep have gone wrong");
+        }
+        return new Response("processing");
+    }
 }

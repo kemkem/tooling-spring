@@ -8,4 +8,5 @@ import java.util.concurrent.CompletableFuture;
 
 public interface AsyncService {
     CompletableFuture<AsyncResult> asyncProcess(MonitoringData monitoringData) throws ServiceException;
+    CompletableFuture<AsyncResult> asyncProcessError(MonitoringData monitoringData) throws ServiceException;
 }

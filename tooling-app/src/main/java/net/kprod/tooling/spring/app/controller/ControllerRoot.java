@@ -49,6 +49,19 @@ public class ControllerRoot {
     }
 
     /**
+     * Returns a json object {@link Response} with {@link FooService#barError} response
+     * This controller method will throw an error
+     * @return Json message
+     * @throws Exception if something fails (it will !)
+     */
+    @RequestMapping(value = "/barError", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> barError() throws Exception {
+        Response response = fooService.barError();
+        LOG.info("Response [{}]", response.getMessage());
+        return ResponseEntity.ok(response);
+    }
+
+    /**
      * Force an exception to rise
      * @return Json exception message
      * @throws Exception if something fails (it does !)

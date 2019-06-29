@@ -1,6 +1,6 @@
 package net.kprod.tooling.spring.starter.async;
 
-import net.kprod.tooling.spring.starter.async.AsyncRunnable;
+import net.kprod.tooling.spring.commons.exception.ServiceException;
 import net.kprod.tooling.spring.starter.data.bean.AsyncResult;
 import net.kprod.tooling.spring.starter.data.bean.MonitoringData;
 import net.kprod.tooling.spring.starter.service.MonitoringService;
@@ -22,18 +22,16 @@ public class SupplyAsync implements Supplier {
      * @param monitoringService
      * @param runnable
      */
-    public SupplyAsync(MonitoringService monitoringService, MonitoringData monitorData, AsyncRunnable runnable) {
+    public SupplyAsync(MonitoringService monitoringService, MonitoringData monitorData, AsyncRunnable runnable) throws ServiceException {
         if(monitoringService == null ||
                 monitorData == null ||
                 runnable == null) {
             //FIXME
-            //throw new ServiceException("All parameters must be defined");
+            throw new ServiceException("All parameters must be defined");
         }
         this.monitoringService = monitoringService;
         this.monitorData = monitorData;
         this.runnable = runnable;
-        //set async suffix
-        //this.monitorData = MonitoringData.Builder.duplicate(monitorData, "async");
     }
 
 

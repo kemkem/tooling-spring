@@ -6,5 +6,5 @@ import net.kprod.tooling.spring.commons.exception.ServiceException;
 public interface FooService {
     Response foo() throws ServiceException;
     Response bar() throws ServiceException;
-
+    Response barError() throws ServiceException;
 }
