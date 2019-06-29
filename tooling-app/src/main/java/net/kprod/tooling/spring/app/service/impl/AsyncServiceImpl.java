@@ -3,7 +3,7 @@ package net.kprod.tooling.spring.app.service.impl;
 import net.kprod.tooling.spring.app.service.AsyncService;
 import net.kprod.tooling.spring.starter.data.bean.AsyncResult;
 import net.kprod.tooling.spring.starter.data.bean.MonitoringData;
-import net.kprod.tooling.spring.starter.data.bean.SupplyAsync;
+import net.kprod.tooling.spring.starter.async.SupplyAsync;
 import net.kprod.tooling.spring.starter.service.MonitoringService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,8 @@ public class AsyncServiceImpl implements AsyncService {
         } catch (Exception e) {
             LOG.error("sleep have gone wrong");
         }
-        LOG.info("async processing completed");
+        throw new NullPointerException("bang");
+        //LOG.info("async processing completed");
 
     }
 }

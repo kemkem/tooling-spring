@@ -3,6 +3,7 @@ tooling :
   error :
     stacktrace :
       include : true
+      log : true
 
 #Logger config
 logging:

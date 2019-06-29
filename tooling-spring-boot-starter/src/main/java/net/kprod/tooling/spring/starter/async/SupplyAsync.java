@@ -1,5 +1,8 @@
-package net.kprod.tooling.spring.starter.data.bean;
+package net.kprod.tooling.spring.starter.async;
 
+import net.kprod.tooling.spring.starter.async.AsyncRunnable;
+import net.kprod.tooling.spring.starter.data.bean.AsyncResult;
+import net.kprod.tooling.spring.starter.data.bean.MonitoringData;
 import net.kprod.tooling.spring.starter.service.MonitoringService;
 
 import java.util.function.Supplier;
@@ -30,7 +33,7 @@ public class SupplyAsync implements Supplier {
         this.monitorData = monitorData;
         this.runnable = runnable;
         //set async suffix
-        this.monitorData = MonitoringData.Builder.duplicate(monitorData, "async");
+        //this.monitorData = MonitoringData.Builder.duplicate(monitorData, "async");
     }
 
 

@@ -48,7 +48,7 @@ public class ControllerLogAsyncAspect {
                         if(result.isSuccessful()) {
                             monitoringService.end(result.getRunTime());
                         } else {
-                            //monitoringService.processException(result.getException());
+                            monitoringService.processException(result.getException());
                         }
                     }
                 });

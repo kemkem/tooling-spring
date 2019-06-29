@@ -1,14 +1,24 @@
 package net.kprod.tooling.spring.starter.service.impl;
 
+import net.kprod.tooling.spring.commons.exception.ExceptionUtils;
+import net.kprod.tooling.spring.commons.exception.HttpServiceException;
 import net.kprod.tooling.spring.commons.exception.ServiceException;
+import net.kprod.tooling.spring.commons.log.Msg;
 import net.kprod.tooling.spring.starter.data.bean.MonitoringData;
+import net.kprod.tooling.spring.starter.data.response.ResponseException;
 import net.kprod.tooling.spring.starter.service.MonitoringService;
 import org.apache.juli.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Optional;
 import java.util.UUID;
 
 /** {@inheritDoc} */
@@ -27,11 +37,19 @@ public class MonitoringServiceImpl implements MonitoringService {
 
     public static final String SERVICENAME_SEPARATOR = ".";
 
+    @Value("${tooling.error.stacktrace.include:false}")
+    private boolean includeStackTrace;
+
+    @Value("${tooling.error.stacktrace.log:true}")
+    private boolean logStackTrace;
+
+    public static final String STACKTRACE_UNAVAILABLE_MESSAGE = "unavailable";
+
     /** {@inheritDoc} */
     @Override
     public String start(String controllerName, String methodName) {
         MDC.clear();
-        //processId is a ramdom UUID
+        //processId is a random UUID
         String processId = UUID.randomUUID().toString();
 
         StringBuilder sbServiceName = new StringBuilder();
@@ -118,4 +136,51 @@ public class MonitoringServiceImpl implements MonitoringService {
         }
         return logDataId.substring(LOG_DATA_ID_SHORT_DIFF);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResponseEntity<ResponseException> createErrorResponse(Exception parentException, HttpServiceException serviceException) {
+        //Create response
+        ResponseException responseException = this.processException(parentException, Optional.of(serviceException));
+        //Return response entity with proper status
+        return ResponseEntity.status(serviceException.getStatus()).body(responseException);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResponseException processException(Exception exception) {
+        return this.processException(exception, Optional.empty());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResponseException processException(Exception parentException, Optional<HttpServiceException> optFinalException) {
+        ResponseException responseException = new ResponseException();
+
+        if(optFinalException.isPresent()) {
+            responseException.setMessage(Msg.format("Exception message [{}] translated to [{}] status [{}]",
+                    parentException.getMessage(),
+                    optFinalException.get().getMessage(),
+                    optFinalException.get().getReason()));
+        } else {
+            responseException.setMessage(Msg.format("Exception message [{}]",
+                    parentException.getMessage()));
+        }
+
+        if(includeStackTrace) {
+            responseException.setStacktrace(ExceptionUtils.getStacktraceAsString(parentException));
+        } else {
+            responseException.setStacktrace(STACKTRACE_UNAVAILABLE_MESSAGE);
+        }
+
+        LOG.error(responseException.getMessage());
+
+        if(logStackTrace) {
+            LOG.error(responseException.getStacktrace());
+        }
+
+        return responseException;
+    }
+
+
 }

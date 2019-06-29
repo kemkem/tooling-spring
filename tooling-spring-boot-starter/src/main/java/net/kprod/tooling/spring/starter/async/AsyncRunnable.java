@@ -1,4 +1,4 @@
-package net.kprod.tooling.spring.starter.data.bean;
+package net.kprod.tooling.spring.starter.async;
 
 @FunctionalInterface
 public interface AsyncRunnable<E extends Exception> extends Runnable {
